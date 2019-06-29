@@ -1,24 +1,17 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native';
-import SearchableFlatList from './src/SearchableList';
+import { createStackNavigator, createAppContainer } from "react-navigation";
+import HomeScreen from './src/screens/HomeScreen'
+import AddScreen from './src/screens/AddScreen'
+import EditScreen from './src/screens/EditScreen'
 
-
-export default class App extends React.Component {
-    render() {
-        return (
-            <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-            <SearchableFlatList />
-            </SafeAreaView>
-        );
-    }
-}
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
+const AppNavigator = createStackNavigator(
+    {
+      Home: HomeScreen,
+      Add: AddScreen,
+      Edit: EditScreen
     },
-});
+    {
+      initialRouteName: "Home"
+    }
+  );
+
+export default createAppContainer(AppNavigator);

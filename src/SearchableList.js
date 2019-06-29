@@ -89,6 +89,11 @@ class FlatListDemo extends Component {
     );
   };
 
+  onItemPress(item) {
+    this.props.navigation.navigate('Edit', item);
+  }
+
+
   render() {
     if (this.state.loading) {
       return (
@@ -105,6 +110,7 @@ class FlatListDemo extends Component {
             <ListItem
               leftAvatar={{source: (item.imageAvailable? {uri: item.image.uri} : undefined)}}
               title={item.name}
+              onLongPress={this.onItemPress(item)}
             />
           )}
           keyExtractor={item => item.id}

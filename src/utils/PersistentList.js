@@ -1,11 +1,11 @@
 import {AsyncStorage} from 'react-native';
 
 export default class PersistentList {
-    constructor(primaryKey, onLoadComplete) {
-        this.primaryKey = primaryKey;
-        AsyncStorage.getItem(this.primaryKey, (error, result) => {
+    constructor(primaryId, onLoadComplete) {
+        this.primaryId = primaryId;
+        AsyncStorage.getItem(this.primaryId, (error, result) => {
             if (error) {
-                console.error("Failed Load PersistentList ", this.primaryKey);
+                console.error("Failed Load PersistentList", this.primaryId);
             } else {
                 this.cachedList = (result == null ? [] : JSON.parse(result));
                 onLoadComplete();
@@ -18,18 +18,18 @@ export default class PersistentList {
     }
 
     set(item) {
-        this.remove(item.key)
+        this.remove(item.id)
         this.cachedList.push(item);
     }
 
-    remove(key) {
-        this.cachedList = this.cachedList.filter((item) => {return item.key != key;});
+    remove(id) {
+        this.cachedList = this.cachedList.filter((item) => {return item.id != id;});
     }
 
     save(onSaveComplete) {
-        AsyncStorage.setItem(this.primaryKey, JSON.stringify(this.cachedList), (error) => {
+        AsyncStorage.setItem(this.primaryId, JSON.stringify(this.cachedList), function(error) {
             if (error) {
-                console.error("Failed Save PersistentList ", this.primaryKey);
+                console.error("Failed Save PersistentList", this.primaryId);
             } else {
                 onSaveComplete();
             }

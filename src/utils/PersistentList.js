@@ -36,4 +36,9 @@ export default class PersistentList {
         });
     }
 
+    removeAll(onRemoveAllComplete) {
+        this.cachedList = [];
+        this.save(onRemoveAllComplete)
+    }
+
 };

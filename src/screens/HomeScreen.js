@@ -29,17 +29,19 @@ export default class AddScreen extends React.Component {
                     />
 
                 <FlatList
-                        data={this.state.que.sort((a,b) => {return a.name.localeCompare(b.name)})}
+                        data={this.state.que.sort((a,b) => {return b.daysSince/b.frequency-a.daysSince/a.frequency;})}
                         renderItem={({ item }) => (
                             <ListItem
                             leftAvatar={{source: (item.imageAvailable? {uri: item.image.uri} : undefined)}}
                             title={item.name}
+                            subtitle={ (item.daysSince/item.frequency).toString()}
                             />
                         )}
                         keyExtractor={item => item.id}
                         // ItemSeparatorComponent={this.renderSeparator}
                         // ListHeaderComponent={this.renderHeader}
                         />
+                <Button title="REMOVE ALL" onPress={() => this.persistenList.removeAll(this._onLoadComplete.bind(this))}/>
                 </View>
             </SafeAreaView>
         );

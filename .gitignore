@@ -10,3 +10,4 @@ web-build/
 web-report/
 
 .ipynb_checkpoints
+.expo-shared

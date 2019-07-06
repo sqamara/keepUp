@@ -5,6 +5,10 @@ import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList'
 import {MasterListId} from './Settings'
 
+import dailyUpdate from '../utils/dailyUpdate'
+
+var priority_matrix = require('../../scripts/output.json')
+
 export default class AddScreen extends React.Component {
     constructor(params) {
         super(params)
@@ -18,6 +22,10 @@ export default class AddScreen extends React.Component {
         });
     }
 
+    _displayItemOrder(a,b) {
+        return b.daysSince/b.frequency-a.daysSince/a.frequency;
+    }
+
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
@@ -29,12 +37,12 @@ export default class AddScreen extends React.Component {
                     />
 
                 <FlatList
-                        data={this.state.que.sort((a,b) => {return b.daysSince/b.frequency-a.daysSince/a.frequency;})}
+                        data={this.state.que.sort(this._displayItemOrder)}
                         renderItem={({ item }) => (
                             <ListItem
                             leftAvatar={{source: (item.imageAvailable? {uri: item.image.uri} : undefined)}}
                             title={item.name}
-                            subtitle={ (item.daysSince/item.frequency).toString()}
+                            subtitle={ (item.daysSince).toString() + " " + item.frequency.toString()}
                             />
                         )}
                         keyExtractor={item => item.id}
@@ -42,6 +50,14 @@ export default class AddScreen extends React.Component {
                         // ListHeaderComponent={this.renderHeader}
                         />
                 <Button title="REMOVE ALL" onPress={() => this.persistenList.removeAll(this._onLoadComplete.bind(this))}/>
+                <Button title="USE TEST DATA" onPress={() => {
+                    this.persistenList.removeAll(function() {
+                        this._onLoadComplete();
+                        this.persistenList.cachedList = require('../../assets/data/test_people.json');
+                        this.persistenList.save(this._onLoadComplete.bind(this));
+                    }.bind(this));
+                }}/>
+                <Button title="DAILY UPDATE" onPress={() => {dailyUpdate(() => this.persistenList.load(this._onLoadComplete.bind(this)));}}/>
                 </View>
             </SafeAreaView>
         );

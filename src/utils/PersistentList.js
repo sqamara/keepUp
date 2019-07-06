@@ -2,7 +2,11 @@ import {AsyncStorage} from 'react-native';
 
 export default class PersistentList {
     constructor(primaryId, onLoadComplete) {
-        this.primaryId = primaryId;
+        this.primaryId = primaryId; 
+        this.load(onLoadComplete)
+    }
+
+    load(onLoadComplete) {
         AsyncStorage.getItem(this.primaryId, (error, result) => {
             if (error) {
                 console.error("Failed Load PersistentList", this.primaryId);
@@ -12,6 +16,7 @@ export default class PersistentList {
             }
         });
     }
+
 
     getList() {
         return this.cachedList;

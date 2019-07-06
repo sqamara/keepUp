@@ -106,7 +106,7 @@ export default class AddScreen extends Component {
                     data={this.state.data.sort((a, b) => { return a.name.localeCompare(b.name) })}
                     renderItem={({ item }) => (
                         <ListItem
-                            leftAvatar={{ source: (item.imageAvailable ? { uri: item.image.uri } : undefined) }}
+                            leftAvatar={{ source: (item.imageAvailable ? {uri: item.image.uri } : require("../../assets/images/filled.png"))}}
                             title={item.name}
                             onPress={() => this.props.navigation.navigate('Edit', {item: item})}
                         />

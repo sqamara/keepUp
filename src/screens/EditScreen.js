@@ -42,7 +42,7 @@ export default class AddScreen extends React.Component {
                 <View style={{ flex: 1 }}>
                     <Text>Edit World!</Text>
                     <Text>{this.state.item.name}</Text>
-                    <Image source={(this.state.item.imageAvailable? {uri: this.state.item.image.uri} : undefined)} style={{width: 200, height: 200, borderRadius: 200/ 2}} />
+                    <Image source={(this.state.item.imageAvailable ? {uri: this.state.item.image.uri } : require("../../assets/images/filled.png"))} style={{width: 200, height: 200, borderRadius: 200/ 2}} />
                     <Text>Days Since </Text>
                     <NumericInput min={0} value={this.state.item.daysSince} onChange={(value) => {
                         let update = this.state.item;

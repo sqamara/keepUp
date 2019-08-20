@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList'
 import { AppConstants } from './Settings';
 import NumericInput from 'react-native-numeric-input'
+import {StackActions, NavigationActions} from 'react-navigation';                
 
 
 export default class AddScreen extends React.Component {
@@ -32,8 +33,25 @@ export default class AddScreen extends React.Component {
     _onSave() {
         if (this.state.allowSave == true) {
             this.persistenList.set(this.state.item);
-            this.persistenList.save(() => { this.props.navigation.replace('Home') });
+            this.persistenList.save(() => { this._goHome() });
         }
+    }
+
+    _onDelete() {
+        if (this.state.allowSave == true) {
+            this.persistenList.remove(this.state.item.id);
+            this.persistenList.save(() => { this._goHome() });
+        }    
+    }
+
+    _goHome() {
+        const resetAction = StackActions.reset({
+            index: 0,
+            key: null,
+            actions: [
+                NavigationActions.navigate({ routeName: 'Home'})
+            ] })
+        this.props.navigation.dispatch(resetAction);
     }
 
     render() {
@@ -58,7 +76,11 @@ export default class AddScreen extends React.Component {
                     <Button
                         title="Save"
                         onPress={this._onSave.bind(this)}
-                    />
+                    />                    
+                    <Button
+                    title="Delete"
+                    onPress={this._onDelete.bind(this)}
+                />
                 </View>
             </SafeAreaView>
         );

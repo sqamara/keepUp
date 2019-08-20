@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Button } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button, Alert } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList';
@@ -49,6 +49,24 @@ export default class AddScreen extends React.Component {
       this.persistenList.save(this._onLoadComplete.bind(this));
     });
   }
+  
+  _promptForReset(item) {
+    Alert.alert(
+      'Reset ' + item.name,
+      '',
+      [
+        { 
+          text: 'Ok', onPress: () => {
+            item.daysSince = 0;
+            this.persistenList.set(item);
+            this.persistenList.save(this._onLoadComplete.bind(this));
+          } 
+        },
+        {text: 'Cancel'}
+      ],
+      { cancelable: false }
+    );
+  }
 
   constructor(params) {
     super(params);
@@ -85,6 +103,7 @@ export default class AddScreen extends React.Component {
                   item.daysSince.toString() + ' ' + item.frequency.toString()
                 }
                 onPress={() => this.props.navigation.navigate('Edit', {item: item})}
+                onLongPress={() => {this._promptForReset(item)}}
               />
             )}
             keyExtractor={item => item.id}
@@ -109,7 +128,7 @@ export default class AddScreen extends React.Component {
               );
             }}
           />
-          <Button title="DAILY UPDATE" onPress={() => this._update()} />
+          <Button title="CHECK UPDATE" onPress={() => this._update()} />
         </View>
       </SafeAreaView>
     );

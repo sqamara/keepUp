@@ -19,7 +19,7 @@ const updater = {
   },
 
 
-  async checkAndUpdateList(items) {
+  async checkAndUpdateList(items, force) {
 
     // await this.setupParam();
 
@@ -58,7 +58,12 @@ const updater = {
 
     let toAdd = Math.floor((now - then + parseInt(lastUpdateRemainder)) / minInMili);
     let newRemainder = (now - then + parseInt(lastUpdateRemainder)) % minInMili;
+    
 
+    if (force) {
+        toAdd = 1;
+        newRemainder = 0;
+    }
     // console.log('lastUpdateDate', lastUpdateDate)
     // console.log('lastUpdateRemainder', lastUpdateRemainder)
     // console.log('now', now)

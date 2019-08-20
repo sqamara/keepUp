@@ -1,10 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, FlatList, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Button, Alert, Linking} from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList';
 import { AppConstants } from './Settings';
-import { Notifications, Permissions, Constants } from 'expo';
+import { Notifications} from 'expo';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
 import Scheduler from '../notifications/Scheduled';
 import Updater from '../utils/Updater';
 
@@ -40,27 +42,45 @@ export default class AddScreen extends React.Component {
     return b.daysSince / b.frequency - a.daysSince / a.frequency;
   }
 
-  _update() {
+  _update(force) {
     // dailyUpdate(() => this.persistenList.load(this._onLoadComplete.bind(this)));
-    Updater.checkAndUpdateList(this.persistenList.getList()).then((updatedList) => {
+    Updater.checkAndUpdateList(this.persistenList.getList(), force).then((updatedList) => {
       updatedList.forEach((item) => {
         this.persistenList.set(item);
       });
       this.persistenList.save(this._onLoadComplete.bind(this));
     });
   }
-  
+  _call(item) {
+      Linking.openURL('tel:'+item.phoneNumbers[0].number);
+  }
+  _text(item) {
+      Linking.openURL('sms:'+item.phoneNumbers[0].number);
+  }
   _promptForReset(item) {
     Alert.alert(
-      'Reset ' + item.name,
+      item.name,
       '',
       [
+        {
+            text: 'Call',
+            onPress: () => {
+                this._call(item)
+            }
+        },
+        {
+            text: 'Text',
+            onPress: () => {
+                this._text(item)
+            }
+        },
         { 
-          text: 'Ok', onPress: () => {
-            item.daysSince = 0;
-            this.persistenList.set(item);
-            this.persistenList.save(this._onLoadComplete.bind(this));
-          } 
+            text: 'Reset', 
+            onPress: () => {
+                item.daysSince = 0;
+                this.persistenList.set(item);
+                this.persistenList.save(this._onLoadComplete.bind(this));
+            } 
         },
         {text: 'Cancel'}
       ],
@@ -102,8 +122,8 @@ export default class AddScreen extends React.Component {
                 subtitle={
                   item.daysSince.toString() + ' ' + item.frequency.toString()
                 }
-                onPress={() => this.props.navigation.navigate('Edit', {item: item})}
-                onLongPress={() => {this._promptForReset(item)}}
+                onLongPress={() => this.props.navigation.navigate('Edit', {item: item})}
+                onPress={() => {this._promptForReset(item)}}
               />
             )}
             keyExtractor={item => item.id}
@@ -129,6 +149,7 @@ export default class AddScreen extends React.Component {
             }}
           />
           <Button title="CHECK UPDATE" onPress={() => this._update()} />
+          <Button title="FORCE UPDATE" onPress={() => this._update(true)} />
         </View>
       </SafeAreaView>
     );

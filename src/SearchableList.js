@@ -26,7 +26,7 @@ class FlatListDemo extends Component {
       fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Image],
     });
 
-    filteredData = data.filter((item) => {
+    var filteredData = data.filter((item) => {
       if ('phoneNumbers' in item 
       && 'name' in item 
       && item != null 
@@ -44,7 +44,7 @@ class FlatListDemo extends Component {
       loading: false,
     });
     this.arrayholder = filteredData;
-  };
+  }
 
   renderSeparator = () => {
     return (

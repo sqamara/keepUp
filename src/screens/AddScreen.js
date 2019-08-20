@@ -26,7 +26,7 @@ export default class AddScreen extends Component {
             fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Image],
         });
 
-        filteredData = data.filter((item) => {
+        var filteredData = data.filter((item) => {
             if ('phoneNumbers' in item
                 && 'name' in item
                 && item != null
@@ -42,7 +42,7 @@ export default class AddScreen extends Component {
             loading: false,
         });
         this.arrayholder = filteredData;
-    };
+    }
 
     renderSeparator = () => {
         return (
@@ -85,7 +85,7 @@ export default class AddScreen extends Component {
                 value={this.state.value}
             />
         );
-    };
+    }
 
 
     render() {

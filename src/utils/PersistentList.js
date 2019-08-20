@@ -12,7 +12,8 @@ export default class PersistentList {
                 console.error("Failed Load PersistentList", this.primaryId);
             } else {
                 this.cachedList = (result == null ? [] : JSON.parse(result));
-                onLoadComplete();
+                if (onLoadComplete)
+                  onLoadComplete();
             }
         });
     }
@@ -36,6 +37,7 @@ export default class PersistentList {
             if (error) {
                 console.error("Failed Save PersistentList", this.primaryId);
             } else {
+              if (onSaveComplete)
                 onSaveComplete();
             }
         });
@@ -46,4 +48,4 @@ export default class PersistentList {
         this.save(onRemoveAllComplete)
     }
 
-};
+}

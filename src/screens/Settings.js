@@ -1,1 +1,5 @@
-export const MasterListId = 'MasterList';
+export const AppConstants = {
+  MasterListID: 'MasterList', 
+  LastUpdateDateID: 'LastUpdateDate',
+  LastUpdateRemainderID: 'LastUpdateRemainder'
+};

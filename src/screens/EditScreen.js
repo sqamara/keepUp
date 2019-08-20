@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, Image} from 'react-native';
 import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList'
-import { MasterListId } from './Settings'
+import { AppConstants } from './Settings';
 import NumericInput from 'react-native-numeric-input'
 
 
@@ -20,7 +20,7 @@ export default class AddScreen extends React.Component {
             allowSave: false,
             item: updateItem,
         }
-        this.persistenList = new PersistentList(MasterListId, this._onLoadComplete.bind(this));
+        this.persistenList = new PersistentList(AppConstants.MasterListID, this._onLoadComplete.bind(this));
     }
 
     _onLoadComplete() {

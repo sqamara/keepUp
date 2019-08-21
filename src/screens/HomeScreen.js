@@ -22,7 +22,7 @@ export default class AddScreen extends React.Component {
 
     Notifications.addListener(this._handleNotification);
     
-    this.persistenList.removeAll(this._onLoadComplete.bind(this))
+    //this.persistenList.removeAll(this._onLoadComplete.bind(this))
     this._update();
     
   }
@@ -51,12 +51,6 @@ export default class AddScreen extends React.Component {
       this.persistenList.save(this._onLoadComplete.bind(this));
     });
   }
-  _call(item) {
-      Linking.openURL('tel:'+item.phoneNumbers[0].number);
-  }
-  _text(item) {
-      Linking.openURL('sms:'+item.phoneNumbers[0].number);
-  }
   _promptForReset(item) {
     Alert.alert(
       item.name,
@@ -65,13 +59,19 @@ export default class AddScreen extends React.Component {
         {
             text: 'Call',
             onPress: () => {
-                this._call(item)
+                Linking.openURL('tel:'+item.phoneNumbers[0].number);
             }
         },
         {
             text: 'Text',
             onPress: () => {
-                this._text(item)
+                Linking.openURL('sms:'+item.phoneNumbers[0].number);
+            }
+        },
+        {
+            text: 'Note',
+            onPress: () => {
+                this.props.navigation.navigate('Note', {item: item})
             }
         },
         { 

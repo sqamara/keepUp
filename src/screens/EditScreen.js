@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, Image} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, TextInput, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native';
 import PersistentList from '../utils/PersistentList'
 import { AppConstants } from './Settings';
@@ -57,10 +57,11 @@ export default class AddScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
-                <View style={{ flex: 1 }}>
+                <ScrollView style={{ flex: 1 }} keyboardShouldPersistTaps='handled'>
                     <Text>Edit World!</Text>
                     <Text>{this.state.item.name}</Text>
                     <Image source={(this.state.item.imageAvailable ? {uri: this.state.item.image.uri } : require("../../assets/images/filled.png"))} style={{width: 200, height: 200, borderRadius: 200/ 2}} />
+                    <Text>Primary Phone</Text>
                     <Text>Days Since </Text>
                     <NumericInput min={0} value={this.state.item.daysSince} onChange={(value) => {
                         let update = this.state.item;
@@ -73,6 +74,18 @@ export default class AddScreen extends React.Component {
                         update.frequency = value;
                         this.setState({item: update})}
                     } />
+                    <Text>Note</Text>
+                    <TextInput
+                        editable = {true}
+                        multiline = {true}
+                        numberOfLines = {5}
+                        onChangeText={(text) => {
+                            let update = this.state.item;
+                            update.note = text;
+                            this.setState({item: update});
+                        }}
+                        value={this.state.item.note}
+                    />
                     <Button
                         title="Save"
                         onPress={this._onSave.bind(this)}
@@ -81,7 +94,7 @@ export default class AddScreen extends React.Component {
                     title="Delete"
                     onPress={this._onDelete.bind(this)}
                 />
-                </View>
+                </ScrollView>
             </SafeAreaView>
         );
     }

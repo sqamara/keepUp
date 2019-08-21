@@ -7,7 +7,7 @@ export default class PersistentList {
     }
 
     load(onLoadComplete) {
-        AsyncStorage.getItem(this.primaryId, (error, result) => {
+        AsyncStorage.getItem(this.primaryId, function(error, result) {
             if (error) {
                 console.error("Failed Load PersistentList", this.primaryId);
             } else {
@@ -15,7 +15,7 @@ export default class PersistentList {
                 if (onLoadComplete)
                   onLoadComplete();
             }
-        });
+        }.bind(this));
     }
 
 
@@ -40,7 +40,7 @@ export default class PersistentList {
               if (onSaveComplete)
                 onSaveComplete();
             }
-        });
+        }.bind(this));
     }
 
     removeAll(onRemoveAllComplete) {

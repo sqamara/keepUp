@@ -2,8 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, FlatList, Button, Alert, Linking} from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { SafeAreaView } from 'react-native';
-import PersistentList from '../utils/PersistentList';
-import { AppConstants } from './Settings';
+import {PersistentListSingleton} from '../utils/PersistentListSingleton';
 import { Notifications} from 'expo';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
@@ -17,12 +16,12 @@ export default class AddScreen extends React.Component {
     let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
 
     if (Constants.isDevice && result.status === 'granted') {
-      console.log('Notification permissions granted.');
+      //console.log('Notification permissions granted.');
     }
 
     Notifications.addListener(this._handleNotification);
     
-    //this.persistenList.removeAll(this._onLoadComplete.bind(this))
+    //PersistentListSingleton.removeAll(this._onLoadComplete.bind(this))
     this._update();
     
   }
@@ -34,7 +33,7 @@ export default class AddScreen extends React.Component {
 
   _onLoadComplete() {
     this.setState({
-      que: this.persistenList.getList(),
+      que: PersistentListSingleton.getList(),
     });
   }
 
@@ -43,13 +42,8 @@ export default class AddScreen extends React.Component {
   }
 
   _update(force) {
-    // dailyUpdate(() => this.persistenList.load(this._onLoadComplete.bind(this)));
-    Updater.checkAndUpdateList(this.persistenList.getList(), force).then((updatedList) => {
-      updatedList.forEach((item) => {
-        this.persistenList.set(item);
-      });
-      this.persistenList.save(this._onLoadComplete.bind(this));
-    });
+    // dailyUpdate(() => PersistentListSingleton.load(this._onLoadComplete.bind(this)));
+    Updater.checkAndUpdateList(force, this._onLoadComplete.bind(this))
   }
   _promptForReset(item) {
     Alert.alert(
@@ -78,8 +72,8 @@ export default class AddScreen extends React.Component {
             text: 'Reset', 
             onPress: () => {
                 item.daysSince = 0;
-                this.persistenList.set(item);
-                this.persistenList.save(this._onLoadComplete.bind(this));
+                PersistentListSingleton.set(item);
+                PersistentListSingleton.save(this._onLoadComplete.bind(this));
             } 
         },
         {text: 'Cancel'}
@@ -91,11 +85,6 @@ export default class AddScreen extends React.Component {
   constructor(params) {
     super(params);
     this.state = { que: [] };
-    this.persistenList = new PersistentList(
-      AppConstants.MasterListID,
-      this._update.bind(this)
-    );
-
     // Scheduler.scheduleNotification();
   }
 
@@ -133,17 +122,17 @@ export default class AddScreen extends React.Component {
           <Button
             title="REMOVE ALL"
             onPress={() =>
-              this.persistenList.removeAll(this._onLoadComplete.bind(this))
+              PersistentListSingleton.removeAll(this._onLoadComplete.bind(this))
             }
           />
           <Button
             title="USE TEST DATA"
             onPress={() => {
-              this.persistenList.removeAll(
+              PersistentListSingleton.removeAll(
                 function() {
                   this._onLoadComplete();
-                  this.persistenList.cachedList = require('../../assets/data/test_people.json');
-                  this.persistenList.save(this._onLoadComplete.bind(this));
+                  PersistentListSingleton.cachedList = require('../../assets/data/test_people.json');
+                  PersistentListSingleton.save(this._onLoadComplete.bind(this));
                 }.bind(this)
               );
             }}

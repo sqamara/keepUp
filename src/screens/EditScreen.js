@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, Image, TextInput, ScrollView} from 'react-native';
 import { SafeAreaView } from 'react-native';
-import PersistentList from '../utils/PersistentList'
+import { PersistentListSingleton } from '../utils/PersistentListSingleton';
 import { AppConstants } from './Settings';
 import NumericInput from 'react-native-numeric-input'
 import {StackActions, NavigationActions} from 'react-navigation';                
@@ -18,30 +18,18 @@ export default class AddScreen extends React.Component {
             updateItem.frequency = 7
         }
         this.state = {
-            allowSave: false,
             item: updateItem,
         }
-        this.persistenList = new PersistentList(AppConstants.MasterListID, this._onLoadComplete.bind(this));
-    }
-
-    _onLoadComplete() {
-        this.setState({
-            allowSave: true
-        });
     }
 
     _onSave() {
-        if (this.state.allowSave == true) {
-            this.persistenList.set(this.state.item);
-            this.persistenList.save(() => { this._goHome() });
-        }
+        PersistentListSingleton.set(this.state.item);
+        PersistentListSingleton.save(() => { this._goHome() });
     }
 
     _onDelete() {
-        if (this.state.allowSave == true) {
-            this.persistenList.remove(this.state.item.id);
-            this.persistenList.save(() => { this._goHome() });
-        }    
+        PersistentListSingleton.remove(this.state.item.id);
+        PersistentListSingleton.save(() => { this._goHome() });
     }
 
     _goHome() {

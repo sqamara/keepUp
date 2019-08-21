@@ -1,4 +1,4 @@
-import PersistentList from './PersistentList';
+import { PersistentListSingleton } from './PersistentListSingleton';
 import { AppConstants } from '../screens/Settings';
 import { AsyncStorage } from 'react-native';
 
@@ -19,8 +19,8 @@ const updater = {
   },
 
 
-  async checkAndUpdateList(items, force) {
-
+  async checkAndUpdateList(force, callback) {
+    let items = PersistentListSingleton.getList();
     // await this.setupParam();
 
     var lastUpdateDate = null;
@@ -82,9 +82,10 @@ const updater = {
 
     items.forEach(item => {
       item.daysSince += toAdd;
+      PersistentListSingleton.set(item)
     });
-
-    return items;
+    
+    PersistentListSingleton.save(callback)
   }
 
 };

@@ -1,28 +1,37 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "web": "expo start --web"
   },
   "dependencies": {
-    "expo": "^33.0.0",
-    "expo-contacts": "^5.0.2",
-    "react": "16.8.3",
-    "react-dom": "^16.8.6",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
+    "expo": "^37.0.0",
+    "expo-splash-screen": "^0.2.3",
+    "expo-updates": "~0.2.0",
+    "react": "~16.9.0",
+    "react-dom": "16.9.0",
+    "react-native": "~0.61.5",
+    "react-native-gesture-handler": "~1.6.0",
+    "react-native-reanimated": "~1.7.0",
+    "react-native-screens": "~2.2.0",
+    "react-native-unimodules": "~0.9.0",
+    "react-native-web": "^0.11.7",
+    "expo-cli": "^3.21.5",
+    "expo-contacts": "~8.1.0",
     "react-native-background-task": "^0.2.1",
     "react-native-elements": "^1.1.0",
     "react-native-numeric-input": "^1.8.0",
     "react-native-remote-svg": "^2.0.6",
     "react-native-swipe-list-view": "^1.5.8",
-    "react-native-web": "^0.11.4",
     "react-navigation": "^3.11.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.1.1"
+    "@babel/core": "~7.9.0",
+    "babel-jest": "~25.2.6",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.9.0",
+    "babel-preset-expo": "^8.1.0"
   },
   "private": true
 }

@@ -3,7 +3,6 @@
     "name": "Keep Up",
     "slug": "keepUp",
     "privacy": "public",
-    "sdkVersion": "33.0.0",
     "platforms": [
       "ios",
       "android",
@@ -24,7 +23,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "bundleIdentifier": "keepup"
+    },
+    "android": {
+      "package": "keepup"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
